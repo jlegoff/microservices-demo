@@ -173,3 +173,15 @@ services:
     read_only: true
     hostname: user-simulator
     command: "-d 60 -r 200 -c 2 -h edge-router"
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.34.0
+    hostname: otel-collector
+    command: ["--config=/etc/otel-collector-config.yml"]
+    volumes:
+      - ./otel-collector-config.yml:/etc/otel-collector-config.yml
+      - ./log:/var/log/
+  prom-mysql-exporter:
+    image: prom/mysqld-exporter:v0.13.0
+    hostname: prom-mysql-exporter
+    environment:
+      - DATA_SOURCE_NAME=root@(catalogue-db:3306)/

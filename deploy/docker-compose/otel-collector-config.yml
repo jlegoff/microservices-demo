@@ -1,0 +1,45 @@
+extensions:
+  health_check:
+
+receivers:
+  hostmetrics:
+    collection_interval: 1m
+    scrapers:
+      cpu:
+      load:
+      memory:
+      disk:
+      filesystem:
+      network:
+      processes:
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: 'mysql_job'
+          scrape_interval: 30s
+          static_configs:
+             - targets: ['prom-mysql-exporter:9104']
+
+# processors:
+#   batch:
+#   resourcedetection:
+#     detectors: [system]
+
+exporters:
+  logging:
+    logLevel: debug
+  file:
+    path: /var/log/collector_log.json
+  otlp:
+    endpoint: staging-otlp.nr-data.net:4317
+    headers:
+      api-key: xxx 
+
+service:
+  pipelines:
+    metrics:
+      receivers: [prometheus]
+      processors: [batch]
+      exporters: [logging, otlp, file]
+
+  extensions: [health_check]
