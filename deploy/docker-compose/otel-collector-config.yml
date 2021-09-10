@@ -20,10 +20,10 @@ receivers:
           static_configs:
              - targets: ['prom-mysql-exporter:9104']
 
-# processors:
-#   batch:
-#   resourcedetection:
-#     detectors: [system]
+processors:
+  batch:
+  resourcedetection:
+    detectors: [system]
 
 exporters:
   logging:
@@ -33,7 +33,7 @@ exporters:
   otlp:
     endpoint: staging-otlp.nr-data.net:4317
     headers:
-      api-key: xxx 
+      api-key: ${NR_LICENSE_KEY}
 
 service:
   pipelines:

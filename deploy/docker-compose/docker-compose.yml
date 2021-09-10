@@ -180,6 +180,8 @@ services:
     volumes:
       - ./otel-collector-config.yml:/etc/otel-collector-config.yml
       - ./log:/var/log/
+    environment:
+      - NR_LICENSE_KEY=${NR_LICENSE_KEY}
   prom-mysql-exporter:
     image: prom/mysqld-exporter:v0.13.0
     hostname: prom-mysql-exporter
